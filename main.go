@@ -7,6 +7,7 @@ import (
 type Operator interface {
 	handle() int
 }
+
 type Operands struct {
 	x int
 	y int
@@ -45,15 +46,36 @@ func (operation Multiplication) handle() int {
 }
 
 func main() {
-	operators := []Operator{
-		Addition{Operands{1, 2}},
-		Subtraction{Operands{1, 2}},
-		Multiplication{Operands{1, 2}},
-		Division{Operands{1, 2}},
+	var x, y int
+	var o string
+	var operator Operator
+
+	fmt.Println("Enter first num:")
+	fmt.Scan(&x)
+	fmt.Println("Enter second num:")
+	fmt.Scan(&y)
+
+	operands := Operands{x, y}
+
+	fmt.Println("Enter operator (+, -, *, /):")
+	for {
+		if operator != nil {
+			break
+		}
+		fmt.Scan(&o)
+		switch o {
+		case "+":
+			operator = Addition{operands}
+		case "_":
+			operator = Subtraction{operands}
+		case "/":
+			operator = Division{operands}
+		case "*":
+			operator = Multiplication{operands}
+		default:
+			fmt.Println("Enter a valid operator (+, -, *, /)")
+		}
 	}
 
-	for _, operator := range operators {
-		fmt.Println(operator.handle())
-	}
+	fmt.Println("Result is: ", operator.handle())
 }
-
